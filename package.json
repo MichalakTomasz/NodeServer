@@ -1,0 +1,13 @@
+{
+  "name": "nodeserver",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "test",
+    "start": "app.js"
+  },
+  "author": "tm",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
