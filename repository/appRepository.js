@@ -1,4 +1,3 @@
-const { openConnection, closeConnection } = require("../data/db-context");
 const { Product } = require("../models/data-models");
 
 const getProducts = async () => {

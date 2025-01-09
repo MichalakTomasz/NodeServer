@@ -1,10 +1,10 @@
-const { connectionString } = require('../common-consts')
+const config  = require('../services/configurationService')
 const { Sequelize } = require('sequelize')
 
 const openConnection = () => {
     return new Sequelize({
         dialect: 'sqlite',
-        storage: connectionString
+        storage: config.connectionString
     })
 }
 

@@ -1,38 +1,40 @@
 const { getProducts, insertProduct } = require("../repository/appRepository");
-const { Product } = require("../models/data-models");
+const { checkAuthHeader } = require('../services/authHeaderService')
+const express = require('express'); 
+const router = express.Router();
 
-const addController = (app) => {
-  app.get("/", (req, res) => {
+  router.get("/", (req, res) => {
     res.send("Hello World!");
   });
 
-  app.get("/about", (req, res) => {
+  router.get("/about", (req, res) => {
     res.send({
       title: "test nodejs",
       description: "It's a test nodeJs server",
     });
   });
 
-  app.get("/connection", (req, res) => {
+  router.get("/connection", (req, res) => {
     res.send(
       (async () => {
-        return await testConnection();
+        return await testConnection()
       })
         ? "connection ok"
         : "connection error"
     );
   });
 
-  app.get("/product", async (req, res) => {
-    const result = await getProducts()
-    res.send(result)
-  });
+  router.get("/product", async (req, res) => {
+    if (checkAuthHeader(req, res)){
+      const result = await getProducts()
+      res.send(result)
+    }    
+  })
 
-  app.post("/product", async (req, res) => {
+  router.post("/product", async (req, res) => {
         const product = req.body
-        const result = await insertProduct(product);
+        const result = await insertProduct(product)
         res.send(result)  
-  });
-};
+  })
 
-module.exports = addController;
+  module.exports = router
