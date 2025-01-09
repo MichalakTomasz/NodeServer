@@ -11,7 +11,7 @@ const checkAuthHeader = (req, res) => {
         res.status(400).json({ message: 'Invalid token.'})
         return false
     }
-    
+
     return true;
 };
 

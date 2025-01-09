@@ -1,4 +1,4 @@
-const { getProducts, insertProduct } = require("../repository/appRepository");
+const { getProducts, insertProduct, updateProduct, deleteProduct } = require("../repository/appRepository");
 const { checkAuthHeader } = require('../services/authHeaderService')
 const express = require('express'); 
 const router = express.Router();
@@ -35,6 +35,18 @@ const router = express.Router();
         const product = req.body
         const result = await insertProduct(product)
         res.send(result)  
+  })
+
+  router.put("/product", async (req, res) => {
+    const product = req.body
+    const result = await updateProduct(product)
+    res.send(result)
+  })
+
+  router.delete('/product/:id', async (req, res) => {
+    const id = req.params.id
+    const result = await deleteProduct(id)
+    res.send(result)
   })
 
   module.exports = router
