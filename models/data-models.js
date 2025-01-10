@@ -3,6 +3,7 @@ const { openConnection } = require("../data/db-context");
 
 class User extends Model {}
 class Product extends Model {}
+class Role extends Model {}
 
 const initModels = (sequelize) => {
   User.init(
@@ -34,6 +35,27 @@ const initModels = (sequelize) => {
       modelName: "User",
     }
   );
+
+  Role.init(
+    {
+      Id: {
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        unique: true
+      },
+      Name: {
+        type: DataTypes.STRING(20),
+        allowNull: false,
+        unique: true
+      }
+    },
+    {
+      sequelize,
+      modelName: "Role"
+    }
+  )
 
   Product.init(
     {

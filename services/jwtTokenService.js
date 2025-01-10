@@ -15,10 +15,10 @@ const generateToken = (data) => {
     return jwt.sign(payload, secretKey, options)
 }
 
-const verifyToken = (token) => {
+const verifyToken = (token, roles) => {
     try{  
         const user = jwt.verify(token.replace('Bearer ', ''), secretKey)
-        const hasRole =  user.roles.some(r => r = 'guest')
+        const hasRole =  user.roles.some(r => roles.some(ro => ro == r ))
         return {
             isValid : hasRole 
         }
