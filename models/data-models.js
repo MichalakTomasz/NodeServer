@@ -56,7 +56,7 @@ const initModels = (sequelize) => {
         type: DataTypes.STRING(200),
         allowNull: true,
       },
-      UrlPiture: {
+      UrlPicture: {
         type: DataTypes.STRING(200),
         allowNull: true,
       },

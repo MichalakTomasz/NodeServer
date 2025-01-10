@@ -1,7 +1,7 @@
 const { verifyToken } = require('../services/jwtTokenService')
 
 const checkAuthHeader = (req, res) => { 
-    const authHeader = req.headers['authorization']
+    const authHeader = req.headers['Authorization'] || req.headers['authorization']
     if (!authHeader) { 
         res.status(401).send('Access denied. No token provided.')
         return false
