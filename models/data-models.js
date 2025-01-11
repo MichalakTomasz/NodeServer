@@ -34,7 +34,7 @@ const initModels = (sequelize) => {
       sequelize,
       modelName: "User",
     }
-  );
+  )
 
   Role.init(
     {
@@ -91,17 +91,18 @@ const initModels = (sequelize) => {
       sequelize,
       modelName: "Product",
     }
-  );
-};
+  )
+}
 
 const updateDatabase = async () => {
   const sequelize = await openConnection();
   initModels(sequelize);
   await sequelize.sync();
-};
+}
 
 module.exports = {
   User,
   Product,
+  Role,
   updateDatabase,
-};
+}

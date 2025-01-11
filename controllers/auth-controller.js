@@ -21,15 +21,18 @@ router.post("/login", async (req, res) => {
     res.status(authResult.status).json({
       message: authResult.message
     })
+    return
   }
 
   const credentials = req.body
   if (!credentials) {
     res.status(400)
+    return
   }
   const findResult = await findAccount(credentials)
   if (!findResult) {
     res.status(401).json('Wrong credentials')
+    return
   }
 
   const payload = {
@@ -51,6 +54,7 @@ router.post("/register", async (req, res) => {
     res.status(authResult.status).json({
       message: authResult.message
     })
+    return
   }
 
   const inputUser = req.body

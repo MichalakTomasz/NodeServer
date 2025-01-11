@@ -5,7 +5,7 @@ const getUsers = async () => {
 };
 
 const getUserById = async (id) => {
-  return await User.findAll({
+  return await User.findOne({
     where: {
       id: id
     }
@@ -13,15 +13,13 @@ const getUserById = async (id) => {
 }
 
 const findAccount = async (credentials) => {
-  const findResult = await User.findAll({
+  const findResult = await User.findOne({
     where: {
       Email: credentials.Email,
       Password: credentials.Password
     }
   })
-  return findResult.find(u => 
-    u.Email === credentials.Email && 
-    u.Password === credentials.Password)
+  return findResult && true
 }
 
 const insertUser = async (inputUser) => {
@@ -46,6 +44,14 @@ const deleteUser = async (id) => {
 
 const getProducts = async () => {
   return await Product.findAll();
+};
+
+const getProductById = async (id) => {
+  return await Product.findOne({
+    where: {
+      Id: id
+    }
+  });
 };
 
 const insertProduct = async (inputProduct) => {
@@ -76,6 +82,7 @@ module.exports = {
   updateUser,
   deleteUser,
   getProducts,
+  getProductById,
   insertProduct,
   updateProduct,
   deleteProduct
