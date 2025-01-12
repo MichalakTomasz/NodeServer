@@ -1,5 +1,5 @@
 const { generateToken } = require("../services/jwtTokenService")
-const { findAccount, insertUser } = require("../repository/appRepository")
+const { findAccount, registerUser } = require("../repository/appRepository")
 const { checkAuth } = require('../services/authHeaderService')
 const express = require('express');
 const router = express.Router();
@@ -38,7 +38,7 @@ router.post("/login", async (req, res) => {
   const payload = {
     userId: findResult.Id,
     userName: findResult.Email,
-    roles: ['guest', 'user']
+    roles: findResult.Roles.map(r => r.role)
   }
   const token = generateToken(payload)
 
@@ -58,7 +58,14 @@ router.post("/register", async (req, res) => {
   }
 
   const inputUser = req.body
-  inputResult = await insertUser(inputUser)
+  if (!inputUser){
+    res.status(400).json({message: 'Bad request.'})
+  }
+  const roles = [
+    { Name: 'guest'},
+    { Name: 'Admin'}
+  ]
+  inputResult = await registerUser(inputUser, roles)
   if (inputResult) {
     res.status(200).json({ message: 'User registred successfull.' })
   } else {

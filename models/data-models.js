@@ -4,6 +4,7 @@ const { openConnection } = require("../data/db-context");
 class User extends Model {}
 class Product extends Model {}
 class Role extends Model {}
+class UserRole extends Model {}
 
 const initModels = (sequelize) => {
   User.init(
@@ -28,11 +29,12 @@ const initModels = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
-      },
+      }
     },
     {
       sequelize,
-      modelName: "User",
+      modelName: 'User',
+      tableName: 'User'
     }
   )
 
@@ -47,13 +49,13 @@ const initModels = (sequelize) => {
       },
       Name: {
         type: DataTypes.STRING(20),
-        allowNull: false,
-        unique: true
+        allowNull: false
       }
     },
     {
       sequelize,
-      modelName: "Role"
+      modelName: 'Role',
+      tableName: 'Role'
     }
   )
 
@@ -85,19 +87,39 @@ const initModels = (sequelize) => {
       Price: {
         type: DataTypes.NUMBER,
         allowNull: false,
-      },
+      }
     },
     {
       sequelize,
-      modelName: "Product",
+      modelName: 'Product',
+      tableName: 'Product'
     }
   )
+
+  Role.belongsToMany(User, { through: 'UserRole'})
+  User.belongsToMany(Role, { through: 'UserRole'})
+}
+
+const seedDatabase = async () => {
+  const roles = await Role.findAll()
+  if (roles.length === 0) {
+    Role.create({
+      Name: 'guest'
+    })
+    Role.create({
+      Name: 'user'
+    })
+    Role.create({
+      Name: 'admin'
+    })
+  }
 }
 
 const updateDatabase = async () => {
   const sequelize = await openConnection();
   initModels(sequelize);
   await sequelize.sync();
+  await seedDatabase();
 }
 
 module.exports = {
