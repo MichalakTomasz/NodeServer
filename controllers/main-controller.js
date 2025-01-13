@@ -1,8 +1,8 @@
-const express = require('express');
+const express = require('express')
 const router = express.Router()
 
 router.get("/", (req, res) => {
-  res.send("Cloud Academy - backend developer");
+  res.send("Cloud Academy - backend developer")
 });
 
 router.get("/about", (req, res) => {
@@ -14,7 +14,7 @@ router.get("/about", (req, res) => {
 
 router.get("/dbconnectiontest", (req, res) => {
   const result = async () => {
-    return await testConnection();
+    return await testConnection()
   }
   res.send(
       result ? "connection ok"

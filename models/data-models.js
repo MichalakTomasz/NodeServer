@@ -116,7 +116,7 @@ const seedDatabase = async () => {
 }
 
 const updateDatabase = async () => {
-  const sequelize = await openConnection();
+  const sequelize = await openConnection()
   initModels(sequelize);
   await sequelize.sync();
   await seedDatabase();

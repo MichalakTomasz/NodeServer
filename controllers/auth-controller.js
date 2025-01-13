@@ -1,8 +1,8 @@
 const { generateToken } = require("../services/jwtTokenService")
 const { findAccount, registerUser } = require("../repository/appRepository")
 const { checkAuth } = require('../services/authHeaderService')
-const express = require('express');
-const router = express.Router();
+const express = require('express')
+const router = express.Router()
 const guestRole = ['guest']
 
 router.get("/auth", (req, res) => {
@@ -10,10 +10,10 @@ router.get("/auth", (req, res) => {
     userId: "",
     userName: "",
     roles: ["guest"],
-  };
-  const token = generateToken(payload);
-  res.send(token);
-});
+  }
+  const token = generateToken(payload)
+  res.send(token)
+})
 
 router.post("/login", async (req, res) => {
   const authResult = checkAuth(req, guestRole)

@@ -19,7 +19,7 @@ const checkAuth = (req, roles) => {
         }
     }
 
-    return { success: true };
+    return { success: true }
 };
 
 module.exports = { checkAuth }
