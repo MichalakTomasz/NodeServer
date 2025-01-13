@@ -30,7 +30,7 @@ router.post("/login", async (req, res) => {
     return
   }
   const findResult = await findAccount(credentials)
-  if (!findResult) {
+  if (!findResult?.Email) {
     res.status(401).json('Wrong credentials')
     return
   }
