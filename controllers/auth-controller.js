@@ -1,6 +1,6 @@
 const { generateToken } = require("../services/jwtTokenService")
 const { findAccount, registerUser } = require("../repository/appRepository")
-const { checkAuth } = require('../services/authHeaderService')
+const { checkAuth, getHeaderToken } = require('../services/authHeaderService')
 const express = require('express')
 const router = express.Router()
 const guestRole = ['guest']
@@ -16,7 +16,8 @@ router.get("/auth", (req, res) => {
 })
 
 router.post("/login", async (req, res) => {
-  const authResult = checkAuth(req, guestRole)
+  let token = getHeaderToken(req)
+  const authResult = checkAuth(token, guestRole)
   if (!authResult.success) {
     res.status(authResult.status).json({
       message: authResult.message
@@ -40,7 +41,7 @@ router.post("/login", async (req, res) => {
     userName: findResult.Email,
     roles: findResult.Roles.map(r => r.role)
   }
-  const token = generateToken(payload)
+  token = generateToken(payload)
 
   res.status(200).json({
     token: token,
@@ -49,7 +50,8 @@ router.post("/login", async (req, res) => {
 })
 
 router.post("/register", async (req, res) => {
-  const authResult = checkAuth(req, guestRole)
+  const token = getHeaderToken(req)
+  const authResult = checkAuth(token, guestRole)
   if (!authResult.success) {
     res.status(authResult.status).json({
       message: authResult.message

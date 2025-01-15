@@ -1,8 +1,13 @@
 const { verifyToken } = require('../services/jwtTokenService')
 
-const checkAuth = (req, roles) => {
-    const authHeader = req.headers['Authorization'] || req.headers['authorization']
-    if (!authHeader) {
+const getHeaderToken = (req) => 
+     (req.headers['Authorization'] || req.headers['authorization'])?.replace('Bearer ', '')
+
+const getGraphQlHeaderToken = (req) => 
+    req.rawHeaders?.find(e => e.includes('Bearer '))?.replace('Bearer ', '')
+
+const checkAuth = (token, roles) => {
+    if (!token || !roles) {
         return {
             success: false,
             status: 401,
@@ -10,7 +15,7 @@ const checkAuth = (req, roles) => {
         }
     }
 
-    const verifyTokenResult = verifyToken(authHeader, roles)
+    const verifyTokenResult = verifyToken(token, roles)
     if (!verifyTokenResult.isValid) {
         return {
             success: false,
@@ -20,6 +25,10 @@ const checkAuth = (req, roles) => {
     }
 
     return { success: true }
-};
+}
 
-module.exports = { checkAuth }
+module.exports = { 
+    checkAuth, 
+    getHeaderToken,
+    getGraphQlHeaderToken 
+}

@@ -1,4 +1,4 @@
-const { checkAuth } = require("../services/authHeaderService")
+const { checkAuth, getHeaderToken } = require("../services/authHeaderService")
 const {
   getProducts,
   getProductById,
@@ -11,7 +11,8 @@ const router = express.Router()
 const guestRole = ["guest"]
 
 router.get("/product", async (req, res) => {
-  const authResult = checkAuth(req, guestRole)
+  const token = getHeaderToken(req)
+  const authResult = checkAuth(token, guestRole)
   if (authResult.success) {
     const result = await getProducts();
     res.send(result);
@@ -21,10 +22,11 @@ router.get("/product", async (req, res) => {
 });
 
 router.get("/product/:id", async (req, res) => {
-  const authResult = checkAuth(req, guestRole);
+  const token = getHeaderToken(req)
+  const authResult = checkAuth(token, guestRole)
   if (authResult.success) {
     const id = req.params.id
-    const result = await getProductById(id);
+    const result = await getProductById(id)
     res.send(result);
   } else {
     res.status(authResult.status).json({ message: authResult.message })
@@ -32,10 +34,11 @@ router.get("/product/:id", async (req, res) => {
 });
 
 router.post("/product", async (req, res) => {
-  const authResult = checkAuth(req, guestRole);
+  const token = getHeaderToken(req)
+  const authResult = checkAuth(token, guestRole)
   if (authResult.success) {
-    const product = req.body;
-    const result = await insertProduct(product);
+    const product = req.body
+    const result = await insertProduct(product)
     res.send(result);
   } else {
     res.status(authResult.status).json({ message: authResult.message })
@@ -43,10 +46,11 @@ router.post("/product", async (req, res) => {
 });
 
 router.put("/product", async (req, res) => {
-  const authResult = checkAuth(req, guestRole);
+  const token = getHeaderToken(req)
+  const authResult = checkAuth(token, guestRole)
   if (authResult.success) {
-    const product = req.body;
-    const result = await updateProduct(product);
+    const product = req.body
+    const result = await updateProduct(product)
     res.send(result);
   } else {
     res.status(authResult.status).json({ message: authResult.message })
@@ -54,7 +58,8 @@ router.put("/product", async (req, res) => {
 });
 
 router.delete("/product/:id", async (req, res) => {
-  const authResult = checkAuth(req, guestRole);
+  const token = getHeaderToken(req)
+  const authResult = checkAuth(token, guestRole);
   if (authResult.success) {
     const id = req.params.id;
     const result = await deleteProduct(id);
