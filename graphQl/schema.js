@@ -2,7 +2,7 @@ const { buildSchema } = require('graphql')
 
 const schema = buildSchema(`
     input inputProduct {
-        Id: ID!
+        Id: ID
         Name: String
         Code: String
         Description: String
@@ -31,7 +31,7 @@ const schema = buildSchema(`
         Id: ID!
         Email: String
         Password: String
-        RegisterData: String
+        RegisterDate: String
         Roles: [Role]
     }
 
@@ -72,11 +72,11 @@ const schema = buildSchema(`
         updateUser(user: inputUser!): User
         deleteUser(id: ID!): Boolean
         insertProduct(product: inputProduct!): Product
-        updateProduct(id: ID!): Product
+        updateProduct(product: inputProduct!): Boolean
         deleteProduct(id: ID!): Boolean
-        registerUser(credentials: inputCredentials!, roles: [inputRole]!): Boolean
         auth: String
         login(credentials: inputCredentials): TokenResult
+        register(user: inputCredentials!): String
     }
     `)
 

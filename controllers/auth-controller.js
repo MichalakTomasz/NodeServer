@@ -63,6 +63,13 @@ router.post("/register", async (req, res) => {
   if (!inputUser){
     res.status(400).json({message: 'Bad request.'})
   }
+
+  const findResult = await findAccount(inputUser)
+  if (findResult?.Email) {
+    res.status(401).json({ message: 'This email exists.' })
+    return
+  }
+        
   const roles = [
     { Name: 'guest'},
     { Name: 'Admin'}

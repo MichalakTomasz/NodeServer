@@ -1,5 +1,6 @@
 const { DataTypes, Model } = require("sequelize");
 const { openConnection } = require("../data/db-context");
+const moment =require('moment')
 
 class User extends Model {}
 class Product extends Model {}
@@ -29,6 +30,10 @@ const initModels = (sequelize) => {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
+        get() {
+          const rawValue = this.getDataValue('RegisterDate')
+          return moment(rawValue).format('DD.MM.YYYY')
+        }
       }
     },
     {
