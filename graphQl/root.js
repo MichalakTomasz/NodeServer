@@ -13,6 +13,8 @@ const {
 } = require('../repository/appRepository')
 const { checkAuth, getGraphQlHeaderToken } = require('../services/authHeaderService')
 const guestRole = ['guest']
+const userRole = ['user']
+const adminRole = ['admin']
 
 const root = {
 //Query
@@ -21,19 +23,19 @@ const root = {
     getProduct: async (args, context) => 
         await protectRequest(args.id, context, getProductById, guestRole),
     getUserById: async (args, context) => 
-        await protectRequest(args.id, context, getUserById, guestRole),
+        await protectRequest(args.id, context, getUserById, userRole),
         
 //Mutation
     findAccount: async (args, context) => 
         await protectRequest(args.credentials, context, findAccount, guestRole),
     insertUser: async (args, context) => 
-        await protectRequest(args.user, context, insertUser, guestRole),
+        await protectRequest(args.user, context, insertUser, adminRole),
     updateUser: async (args, context) => 
-        await protectRequest(args.user, context, updateUser, guestRole),
+        await protectRequest(args.user, context, updateUser, adminRole),
     insertProduct: async (args, context) => 
-        await protectRequest(args.product, context, insertProduct, guestRole),
+        await protectRequest(args.product, context, insertProduct, userRole),
     updateProduct: async (args, context) => 
-        (await protectRequest(args.product, context, updateProduct, guestRole))?.length > 0,
+        (await protectRequest(args.product, context, updateProduct, userRole))?.length > 0,
     auth: () => {
         const payload = {
             userId: "",
@@ -65,7 +67,7 @@ const root = {
         const payload = {
           userId: findResult.Id,
           userName: findResult.Email,
-          roles: findResult.Roles.map(r => r.role)
+          roles: findResult.Roles.map(r => r.Name)
         }
         token = generateToken(payload)
     
@@ -93,7 +95,8 @@ const root = {
 
         const roles = [
             { Name: 'guest'},
-            { Name: 'Admin'}
+            { Name: 'user'},
+            { Name: 'admin'}
         ]
         const registerUserResult = await registerUser(credentials, roles)
         if (registerUserResult) {
@@ -103,7 +106,6 @@ const root = {
         }
     }
 }
-
 
 const protectRequest = async (args, context, func, roles) => {
     const token = getGraphQlHeaderToken(context)

@@ -16,6 +16,4 @@ const endpointsFiles = [
   './controllers/product-controller.js',
   './controllers/user-controller.js'];
 
-swaggerAutogen(outputFile, endpointsFiles, doc).then(() => {
-    require('./server')
-})
+ swaggerAutogen(outputFile, endpointsFiles, doc)

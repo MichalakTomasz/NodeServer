@@ -19,7 +19,8 @@ const findAccount = async (credentials) => {
       Password: credentials.Password,
     },
     include: {
-      model: Role
+      model: Role,
+      attributes: ['Name']
     }
   })
   return findResult;

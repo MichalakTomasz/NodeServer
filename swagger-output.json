@@ -14,7 +14,7 @@
   "paths": {
     "/auth": {
       "get": {
-        "description": "",
+        "description": "Authorization is necessary to use app",
         "responses": {
           "200": {
             "description": "OK"
@@ -24,7 +24,7 @@
     },
     "/login": {
       "post": {
-        "description": "",
+        "description": "LogIn to application",
         "parameters": [
           {
             "name": "Authorization",
@@ -35,6 +35,24 @@
             "name": "authorization",
             "in": "header",
             "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "description": "credentials: email and password",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Email": {
+                  "type": "string",
+                  "example": "exampleUser@mail.net"
+                },
+                "Password": {
+                  "type": "string",
+                  "example": "qwerty1234"
+                }
+              }
+            }
           }
         ],
         "responses": {
