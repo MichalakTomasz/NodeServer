@@ -8,7 +8,7 @@ router.get("/", (req, res) => {
 router.get("/about", (req, res) => {
   res.send({
     title: "Test nodeJs back-end server",
-    description: "Example json object which tests API sending.",
+    description: "Example json object which tests example Rest API.",
   });
 });
 

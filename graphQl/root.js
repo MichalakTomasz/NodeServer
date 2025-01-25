@@ -11,7 +11,7 @@ const {
     insertProduct,
     updateProduct
 } = require('../repository/appRepository')
-const { checkAuth, getGraphQlHeaderToken } = require('../services/authHeaderService')
+const { checkAuth, getHeaderToken } = require('../services/authHeaderService')
 const guestRole = ['guest']
 const userRole = ['user']
 const adminRole = ['admin']
@@ -44,8 +44,8 @@ const root = {
           }
           return generateToken(payload)
         },
-    login: async (args, context) => {
-        let token = getGraphQlHeaderToken(context)
+    login: async (args, header) => {
+        let token = getHeaderToken(header)
         const authResult = checkAuth(token, guestRole)
         if (!authResult.success) {
             res.status(authResult.status).json({
@@ -76,8 +76,8 @@ const root = {
           isAuthorized: true
         }
     },
-    register: async (args, context) => {
-        const token = getGraphQlHeaderToken(context)
+    register: async (args, header) => {
+        const token = getHeaderToken(header)
         const authResult = checkAuth(token, guestRole)
         if (!authResult.success) {
             throw new Error(authResult.message)
@@ -107,8 +107,8 @@ const root = {
     }
 }
 
-const protectRequest = async (args, context, func, roles) => {
-    const token = getGraphQlHeaderToken(context)
+const protectRequest = async (args, header, func, roles) => {
+    const token = getHeaderToken(header)
         const authResult = await checkAuth(token, roles)
         if (authResult.success){
             return await func(args)

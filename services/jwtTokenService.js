@@ -12,7 +12,8 @@ const generateToken = (data) => {
         expiresIn: '0.5h'
     }
 
-    return jwt.sign(payload, secretKey, options)
+    const token = jwt.sign(payload, secretKey, options)
+    return token
 }
 
 const verifyToken = (token, roles) => {
