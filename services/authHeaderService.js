@@ -2,10 +2,6 @@ const { verifyToken } = require('../services/jwtTokenService')
 
 const getHeaderToken = (req) => 
      (req.headers['Authorization'] || req.headers['authorization'])?.replace('Bearer ', '')
-
-const getGraphQlHeaderToken = (req) => 
-    req.rawHeaders?.find(e => e.includes('Bearer '))?.replace('Bearer ', '')
-
 const checkAuth = (token, roles) => {
     if (!token || !roles) {
         return {
@@ -29,6 +25,5 @@ const checkAuth = (token, roles) => {
 
 module.exports = { 
     checkAuth, 
-    getHeaderToken,
-    getGraphQlHeaderToken 
+    getHeaderToken
 }
